@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CommuTrack — Community &amp; Student Issue Reporting</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark">◆</span>
+    <span class="brand-name">CommuTrack</span>
+  </div>
+  <div class="brand-tag">Report it once. Track it through.</div>
+</header>
+
+<main id="app">
+
+  <!-- ROLE SELECT -->
+  <section id="view-landing" class="view active">
+    <h1>Who's signing in?</h1>
+    <p class="lede">Pick your role to continue. Each one opens a different set of tools.</p>
+    <div class="role-grid">
+      <button class="role-card" data-role="student">
+        <span class="role-index">01</span>
+        <h2>Student</h2>
+        <p>Register, log in, report an issue, and track its status.</p>
+      </button>
+      <button class="role-card" data-role="indigene">
+        <span class="role-index">02</span>
+        <h2>Indigene</h2>
+        <p>Track community issues already reported in your area.</p>
+      </button>
+      <button class="role-card" data-role="admin">
+        <span class="role-index">03</span>
+        <h2>Administrator</h2>
+        <p>Log in to review, update, and manage all reports.</p>
+      </button>
+    </div>
+  </section>
+
+  <!-- STUDENT: REGISTER -->
+  <section id="view-student-register" class="view">
+    <button class="back-btn" data-back="landing">← Back</button>
+    <h1>Student registration</h1>
+    <p class="lede">Create an account to start reporting issues.</p>
+    <form id="form-register" class="panel">
+      <label>Full name
+        <input type="text" id="reg-name" required placeholder="e.g. Adaeze Okonkwo">
+      </label>
+      <label>Email
+        <input type="email" id="reg-email" required placeholder="you@school.edu">
+      </label>
+      <label>Password
+        <input type="password" id="reg-password" required minlength="4">
+      </label>
+      <button type="submit" class="primary-btn">Register</button>
+      <p class="switch-line">Already registered? <a href="#" data-goto="student-login">Log in</a></p>
+    </form>
+  </section>
+
+  <!-- STUDENT: LOGIN -->
+  <section id="view-student-login" class="view">
+    <button class="back-btn" data-back="landing">← Back</button>
+    <h1>Student login</h1>
+    <form id="form-student-login" class="panel">
+      <label>Email
+        <input type="email" id="login-email" required placeholder="you@school.edu">
+      </label>
+      <label>Password
+        <input type="password" id="login-password" required>
+      </label>
+      <button type="submit" class="primary-btn">Log in</button>
+      <p class="switch-line">No account yet? <a href="#" data-goto="student-register">Register</a></p>
+      <p class="hint">Demo tip: register first — nothing is saved between sessions.</p>
+    </form>
+  </section>
+
+  <!-- STUDENT: DASHBOARD -->
+  <section id="view-student-dashboard" class="view">
+    <button class="back-btn" data-back="landing">← Log out</button>
+    <h1>Welcome, <span id="student-name-tag"></span></h1>
+    <p class="lede">Report a new issue, or track the ones you've already logged.</p>
+
+    <div class="dash-grid">
+      <div class="panel">
+        <h2>Report an issue</h2>
+        <form id="form-report">
+          <label>Title
+            <input type="text" id="rpt-title" required placeholder="e.g. No streetlights on Hostel Road">
+          </label>
+          <label>Root cause category
+            <select id="rpt-category" required>
+              <option value="">Select a category…</option>
+              <option value="Methods">Methods — process &amp; reporting</option>
+              <option value="People">People — awareness &amp; participation</option>
+              <option value="Technology">Technology — access &amp; platform</option>
+              <option value="Environment">Environment — roads, power, safety</option>
+            </select>
+          </label>
+          <label>Description
+            <textarea id="rpt-desc" rows="3" required placeholder="What's going on?"></textarea>
+          </label>
+          <button type="submit" class="primary-btn">Submit report</button>
+        </form>
+      </div>
+
+      <div class="panel">
+        <h2>Track your reports</h2>
+        <div id="student-report-list" class="report-list"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INDIGENE: TRACK -->
+  <section id="view-indigene-track" class="view">
+    <button class="back-btn" data-back="landing">← Back</button>
+    <h1>Community issue tracker</h1>
+    <p class="lede">All issues reported by students and residents, with live status.</p>
+    <div id="indigene-report-list" class="report-list wide"></div>
+  </section>
+
+  <!-- ADMIN: LOGIN -->
+  <section id="view-admin-login" class="view">
+    <button class="back-btn" data-back="landing">← Back</button>
+    <h1>Administrator login</h1>
+    <form id="form-admin-login" class="panel">
+      <label>Username
+        <input type="text" id="admin-user" required placeholder="admin">
+      </label>
+      <label>Password
+        <input type="password" id="admin-pass" required placeholder="admin">
+      </label>
+      <button type="submit" class="primary-btn">Log in</button>
+      <p class="hint">Demo credentials: <strong>admin</strong> / <strong>admin</strong></p>
+    </form>
+  </section>
+
+  <!-- ADMIN: DASHBOARD -->
+  <section id="view-admin-dashboard" class="view">
+    <button class="back-btn" data-back="landing">← Log out</button>
+    <h1>Administrator dashboard</h1>
+    <p class="lede">View every report, push status updates, or remove closed items.</p>
+
+    <div class="admin-stats" id="admin-stats"></div>
+
+    <div class="panel wide">
+      <h2>All reports</h2>
+      <div id="admin-report-list" class="report-list"></div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot">CommuTrack — a lightweight demo interface. No data leaves this browser tab.</footer>
+
+<script>
+// ---- In-memory data store (no backend, resets on reload) ----
+let students = [];      // {name, email, password}
+let reports = [];       // {id, title, category, desc, reporter, role, status, date}
+let currentStudent = null;
+let reportSeq = 1;
+
+const views = document.querySelectorAll('.view');
+function showView(id) {
+  views.forEach(v => v.classList.remove('active'));
+  document.getElementById('view-' + id).classList.add('active');
+  if (id === 'indigene-track') renderReports('indigene-report-list', reports, false);
+  if (id === 'student-dashboard') renderReports('student-report-list', reports.filter(r => r.reporter === currentStudent.email), false);
+  if (id === 'admin-dashboard') { renderReports('admin-report-list', reports, true); renderStats(); }
+}
+
+// Role select
+document.querySelectorAll('.role-card').forEach(card => {
+  card.addEventListener('click', () => {
+    const role = card.dataset.role;
+    if (role === 'student') showView('student-login');
+    if (role === 'indigene') showView('indigene-track');
+    if (role === 'admin') showView('admin-login');
+  });
+});
+
+// Back buttons
+document.querySelectorAll('[data-back]').forEach(btn => {
+  btn.addEventListener('click', () => showView(btn.dataset.back));
+});
+
+// In-form navigation links
+document.querySelectorAll('[data-goto]').forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    showView(link.dataset.goto);
+  });
+});
+
+// Register
+document.getElementById('form-register').addEventListener('submit', e => {
+  e.preventDefault();
+  const name = document.getElementById('reg-name').value.trim();
+  const email = document.getElementById('reg-email').value.trim().toLowerCase();
+  const password = document.getElementById('reg-password').value;
+
+  if (students.some(s => s.email === email)) {
+    alert('That email is already registered. Try logging in instead.');
+    return;
+  }
+  students.push({ name, email, password });
+  e.target.reset();
+  alert('Registration complete. You can log in now.');
+  showView('student-login');
+});
+
+// Student login
+document.getElementById('form-student-login').addEventListener('submit', e => {
+  e.preventDefault();
+  const email = document.getElementById('login-email').value.trim().toLowerCase();
+  const password = document.getElementById('login-password').value;
+  const match = students.find(s => s.email === email && s.password === password);
+  if (!match) {
+    alert('No matching account. Check your details or register first.');
+    return;
+  }
+  currentStudent = match;
+  document.getElementById('student-name-tag').textContent = match.name;
+  e.target.reset();
+  showView('student-dashboard');
+});
+
+// Report submission
+document.getElementById('form-report').addEventListener('submit', e => {
+  e.preventDefault();
+  const title = document.getElementById('rpt-title').value.trim();
+  const category = document.getElementById('rpt-category').value;
+  const desc = document.getElementById('rpt-desc').value.trim();
+
+  reports.push({
+    id: reportSeq++,
+    title, category, desc,
+    reporter: currentStudent.email,
+    reporterName: currentStudent.name,
+    status: 'Open',
+    date: new Date().toLocaleDateString()
+  });
+  e.target.reset();
+  renderReports('student-report-list', reports.filter(r => r.reporter === currentStudent.email), false);
+});
+
+// Admin login (demo credentials: admin / admin)
+document.getElementById('form-admin-login').addEventListener('submit', e => {
+  e.preventDefault();
+  const user = document.getElementById('admin-user').value.trim();
+  const pass = document.getElementById('admin-pass').value;
+  if (user !== 'admin' || pass !== 'admin') {
+    alert('Incorrect credentials. Demo login is admin / admin.');
+    return;
+  }
+  e.target.reset();
+  showView('admin-dashboard');
+});
+
+// Render a list of reports into a container
+function renderReports(containerId, list, isAdmin) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = '';
+
+  if (list.length === 0) {
+    container.innerHTML = '<p class="empty-state">No reports yet.</p>';
+    return;
+  }
+
+  list.slice().reverse().forEach(r => {
+    const card = document.createElement('div');
+    card.className = 'report-card';
+
+    const statusClass = r.status.replace(' ', '-');
+    card.innerHTML = `
+      <h3>${escapeHtml(r.title)}</h3>
+      <p>${escapeHtml(r.desc)}</p>
+      <div class="report-meta">
+        <span class="tag ${r.category}">${r.category}</span>
+        <span class="status ${statusClass}">${r.status}</span>
+        <span style="font-size:0.78rem;color:var(--ink-soft)">${r.date} · ${escapeHtml(r.reporterName || 'Anonymous')}</span>
+      </div>
+    `;
+
+    if (isAdmin) {
+      const controls = document.createElement('div');
+      controls.className = 'admin-controls';
+
+      const select = document.createElement('select');
+      ['Open', 'In Progress', 'Resolved'].forEach(s => {
+        const opt = document.createElement('option');
+        opt.value = s;
+        opt.textContent = s;
+        if (s === r.status) opt.selected = true;
+        select.appendChild(opt);
+      });
+      select.addEventListener('change', () => {
+        r.status = select.value;
+        renderReports('admin-report-list', reports, true);
+        renderStats();
+      });
+
+      const delBtn = document.createElement('button');
+      delBtn.className = 'small-btn';
+      delBtn.textContent = 'Delete';
+      delBtn.addEventListener('click', () => {
+        reports = reports.filter(item => item.id !== r.id);
+        renderReports('admin-report-list', reports, true);
+        renderStats();
+      });
+
+      controls.appendChild(select);
+      controls.appendChild(delBtn);
+      card.appendChild(controls);
+    }
+
+    container.appendChild(card);
+  });
+}
+
+function renderStats() {
+  const open = reports.filter(r => r.status === 'Open').length;
+  const progress = reports.filter(r => r.status === 'In Progress').length;
+  const resolved = reports.filter(r => r.status === 'Resolved').length;
+  document.getElementById('admin-stats').innerHTML = `
+    <div class="stat"><span class="num">${reports.length}</span><span class="lbl">Total reports</span></div>
+    <div class="stat"><span class="num">${open}</span><span class="lbl">Open</span></div>
+    <div class="stat"><span class="num">${progress}</span><span class="lbl">In progress</span></div>
+    <div class="stat"><span class="num">${resolved}</span><span class="lbl">Resolved</span></div>
+  `;
+}
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+</script>
+</body>
+</html>

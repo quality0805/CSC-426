@@ -1,0 +1,276 @@
+:root {
+  --ink: #1B2A4A;
+  --ink-soft: #4A5A78;
+  --paper: #F7F5F0;
+  --panel: #FFFFFF;
+  --line: #DCD8CE;
+  --amber: #E8A33D;
+  --teal: #3E7C74;
+  --coral: #C1443C;
+  --shadow: 0 2px 10px rgba(27, 42, 74, 0.08);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+h1, h2 {
+  font-family: Georgia, "Times New Roman", serif;
+  color: var(--ink);
+  margin: 0 0 6px;
+}
+
+.topbar {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 20px 32px;
+  border-bottom: 2px solid var(--ink);
+}
+
+.brand { display: flex; align-items: center; gap: 8px; }
+.brand-mark { color: var(--amber); font-size: 1.2rem; }
+.brand-name {
+  font-family: Georgia, serif;
+  font-weight: bold;
+  font-size: 1.3rem;
+  letter-spacing: 0.02em;
+}
+.brand-tag { color: var(--ink-soft); font-size: 0.85rem; font-style: italic; }
+
+#app {
+  flex: 1;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 24px 60px;
+  width: 100%;
+}
+
+.view { display: none; }
+.view.active { display: block; animation: fadeIn 0.25s ease; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.lede { color: var(--ink-soft); margin-top: 0; }
+
+.role-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 28px;
+}
+
+.role-card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 22px 18px;
+  text-align: left;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  transition: transform 0.15s ease, border-color 0.15s ease;
+  font-family: inherit;
+}
+.role-card:hover { transform: translateY(-3px); border-color: var(--amber); }
+.role-card:focus-visible { outline: 3px solid var(--amber); outline-offset: 2px; }
+
+.role-index {
+  display: block;
+  color: var(--amber);
+  font-weight: bold;
+  font-family: Georgia, serif;
+  margin-bottom: 8px;
+}
+.role-card h2 { font-size: 1.1rem; }
+.role-card p { color: var(--ink-soft); font-size: 0.9rem; margin: 6px 0 0; }
+
+.back-btn {
+  background: none;
+  border: none;
+  color: var(--ink-soft);
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 0;
+  margin-bottom: 18px;
+}
+.back-btn:hover { color: var(--ink); text-decoration: underline; }
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 24px;
+  box-shadow: var(--shadow);
+  max-width: 480px;
+}
+.panel.wide { max-width: none; }
+
+form label {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  margin-bottom: 14px;
+}
+
+input, select, textarea {
+  display: block;
+  width: 100%;
+  margin-top: 6px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  color: var(--ink);
+  background: var(--paper);
+}
+input:focus, select:focus, textarea:focus {
+  outline: 2px solid var(--amber);
+  outline-offset: 1px;
+}
+
+.primary-btn {
+  background: var(--ink);
+  color: #fff;
+  border: none;
+  padding: 11px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+.primary-btn:hover { background: var(--teal); }
+
+.switch-line { font-size: 0.85rem; color: var(--ink-soft); margin: 14px 0 0; }
+.switch-line a { color: var(--teal); }
+
+.hint { font-size: 0.8rem; color: var(--ink-soft); margin-top: 12px; }
+
+.dash-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+@media (max-width: 720px) {
+  .role-grid { grid-template-columns: 1fr; }
+  .dash-grid { grid-template-columns: 1fr; }
+}
+
+.report-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 420px;
+  overflow-y: auto;
+}
+.report-list.wide { max-height: none; }
+
+.report-card {
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 12px 14px;
+  background: var(--paper);
+}
+.report-card h3 { margin: 0 0 4px; font-size: 0.98rem; }
+.report-card p { margin: 4px 0 0; font-size: 0.85rem; color: var(--ink-soft); }
+
+.report-meta {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+
+.tag {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 20px;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.tag.Methods { background: #B0342C; }
+.tag.People { background: var(--amber); }
+.tag.Technology { background: #B32DB0; }
+.tag.Environment { background: #2B4FB0; }
+
+.status {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 20px;
+  border: 1px solid currentColor;
+}
+.status.Open { color: var(--coral); }
+.status.In-Progress { color: var(--amber); }
+.status.Resolved { color: var(--teal); }
+
+.admin-controls {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.admin-controls select {
+  width: auto;
+  padding: 6px 8px;
+  font-size: 0.8rem;
+  margin: 0;
+}
+
+.small-btn {
+  background: none;
+  border: 1px solid var(--coral);
+  color: var(--coral);
+  border-radius: 4px;
+  padding: 6px 10px;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+.small-btn:hover { background: var(--coral); color: #fff; }
+
+.admin-stats {
+  display: flex;
+  gap: 14px;
+  margin: 20px 0 26px;
+  flex-wrap: wrap;
+}
+.stat {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 14px 20px;
+  box-shadow: var(--shadow);
+}
+.stat .num { font-family: Georgia, serif; font-size: 1.6rem; font-weight: bold; display: block; }
+.stat .lbl { font-size: 0.78rem; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.04em; }
+
+.empty-state {
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+  font-style: italic;
+  padding: 20px 0;
+}
+
+.foot {
+  text-align: center;
+  padding: 16px;
+  color: var(--ink-soft);
+  font-size: 0.78rem;
+  border-top: 1px solid var(--line);
+}
